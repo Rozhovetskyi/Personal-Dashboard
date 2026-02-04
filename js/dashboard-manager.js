@@ -84,6 +84,30 @@
             }
         }
 
+        reorderWidgets(dashboardId, widgetOrderIds) {
+            const dashboard = this.state.dashboards.find(d => d.id === dashboardId);
+            if (dashboard) {
+                // Create a map for O(1) lookup
+                const widgetMap = new Map(dashboard.widgets.map(w => [w.id, w]));
+                const newWidgets = [];
+
+                widgetOrderIds.forEach(id => {
+                    if (widgetMap.has(id)) {
+                        newWidgets.push(widgetMap.get(id));
+                        widgetMap.delete(id);
+                    }
+                });
+
+                // Append any remaining widgets (safety check)
+                if (widgetMap.size > 0) {
+                    newWidgets.push(...widgetMap.values());
+                }
+
+                dashboard.widgets = newWidgets;
+                this.save();
+            }
+        }
+
         importState(newState) {
             // Basic validation could go here
             if (newState && Array.isArray(newState.dashboards)) {

@@ -13,7 +13,9 @@
         // Helper to create the standard card structure
         createCardElement() {
             const col = document.createElement('div');
-            col.className = 'col s12 m6 l4'; // Responsive grid
+            // col.className = 'col s12 m6 l4'; // Removed for Muuri layout
+            col.style.width = '100%';
+            col.style.height = '100%';
 
             const card = document.createElement('div');
             card.className = 'card blue-grey darken-1 widget-card';

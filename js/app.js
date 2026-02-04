@@ -1,5 +1,7 @@
 // Main App Logic
 (function() {
+    let grid = null;
+
     function initApp() {
         // Initialize Dashboard Manager
         App.DashboardManager.init();
@@ -9,7 +11,6 @@
 
         // Initialize Materialize components that are static
         M.Modal.init(document.querySelectorAll('.modal'), {});
-        M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'), {});
         M.FormSelect.init(document.querySelectorAll('select'), {});
 
         // Event Listeners
@@ -38,7 +39,7 @@
             a.onclick = (e) => {
                 e.preventDefault();
                 App.DashboardManager.setActiveDashboard(dashboard.id);
-                renderWidgets(); // Re-render widgets for the new dashboard
+                renderUI(); // Re-render widgets for the new dashboard
             };
 
             if (activeDashboard && dashboard.id === activeDashboard.id) {
@@ -55,63 +56,143 @@
 
     function renderWidgets() {
         const contentContainer = document.getElementById('dashboard-content');
+
+        // Destroy existing grid if any
+        if (grid) {
+            grid.destroy(true); // true removes elements from DOM, but we clear innerHTML anyway
+            grid = null;
+        }
         contentContainer.innerHTML = '';
 
         const activeDashboard = App.DashboardManager.getActiveDashboard();
         if (!activeDashboard) {
-            contentContainer.innerHTML = '<p class="center-align grey-text">No dashboard selected. Create one!</p>';
+            contentContainer.innerHTML = '<p class="center-align grey-text" style="margin-top: 50px;">No dashboard selected. Create one!</p>';
             return;
         }
 
-        // Add a header for the dashboard with a delete button
-        const headerRow = document.createElement('div');
-        headerRow.className = 'col s12 valign-wrapper';
-        headerRow.style.marginBottom = '20px';
+        // 1. Controls Area (Add Widget)
+        const controlsDiv = document.createElement('div');
+        controlsDiv.className = 'dashboard-controls';
 
-        const title = document.createElement('h5');
-        title.textContent = activeDashboard.name;
-        title.className = 'left';
+        const addBtn = document.createElement('a');
+        addBtn.className = 'waves-effect waves-light btn-add-widget';
+        addBtn.innerHTML = '<i class="material-icons">add</i> Add Widget';
+        // Listener delegated or attached here. Let's delegate in setupEventListeners for consistency,
+        // OR just attach here since we are creating it. Attaching here is explicit.
+        // But to avoid duplication, I'll use the delegation approach in setupEventListeners
+        // effectively by triggering the modal logic.
+        // Actually, just calling a function is easier.
+        addBtn.onclick = (e) => {
+            e.preventDefault();
+            openAddWidgetModal();
+        };
+        controlsDiv.appendChild(addBtn);
+        contentContainer.appendChild(controlsDiv);
 
+        // 2. Grid Container
+        const gridElement = document.createElement('div');
+        gridElement.className = 'grid';
+        contentContainer.appendChild(gridElement);
+
+        // 3. Render Widgets
+        if (activeDashboard.widgets.length > 0) {
+            activeDashboard.widgets.forEach(widgetData => {
+                try {
+                    const item = document.createElement('div');
+                    item.className = 'item';
+                    item.setAttribute('data-id', widgetData.id);
+
+                    const itemContent = document.createElement('div');
+                    itemContent.className = 'item-content';
+                    item.appendChild(itemContent);
+
+                    // Create widget instance
+                    const widget = App.WidgetRegistry.createWidget(
+                        widgetData.type,
+                        widgetData.id,
+                        widgetData.title,
+                        widgetData.config
+                    );
+
+                    // Render into itemContent
+                    widget.render(itemContent);
+
+                    // Cleanup any unwanted wrappers from base-widget if necessary
+                    // (We modified base-widget to remove .col classes, so this should be clean)
+
+                    gridElement.appendChild(item);
+                } catch (e) {
+                    console.error('Failed to render widget:', e);
+                }
+            });
+        }
+
+        // 4. Initialize Muuri
+        grid = new Muuri(gridElement, {
+            dragEnabled: true,
+            layout: {
+                fillGaps: true
+            },
+            dragStartPredicate: (item, e) => {
+                // Prevent drag if clicking on the delete button
+                if (e.target.closest('.cursor-pointer')) {
+                    return false;
+                }
+                // Start drag if clicking on card title
+                if (e.target.matches('.card-title') || e.target.closest('.card-title')) {
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        // Handle Drag Reorder
+        grid.on('dragEnd', function () {
+            const order = grid.getItems().map(item => item.getElement().getAttribute('data-id'));
+            App.DashboardManager.reorderWidgets(activeDashboard.id, order);
+        });
+
+        // Refresh layout on image load
+        const images = gridElement.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('load', () => grid.refreshItems().layout());
+        });
+
+        // 5. Footer (Delete Dashboard)
+        const footerDiv = document.createElement('div');
+        footerDiv.className = 'dashboard-footer';
         const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'btn-flat red-text right waves-effect';
-        deleteBtn.textContent = 'Delete Dashboard';
+        deleteBtn.className = 'btn-delete-dashboard waves-effect';
+        deleteBtn.innerHTML = 'Delete Dashboard';
         deleteBtn.onclick = () => {
-            if (confirm(`Are you sure you want to delete "${activeDashboard.name}"?`)) {
+             if (confirm(`Are you sure you want to delete "${activeDashboard.name}"?`)) {
                 App.DashboardManager.removeDashboard(activeDashboard.id);
                 renderUI();
             }
         };
+        footerDiv.appendChild(deleteBtn);
+        contentContainer.appendChild(footerDiv);
+    }
 
-        // Spacer
-        const spacer = document.createElement('div');
-        spacer.style.flexGrow = 1;
+    function openAddWidgetModal() {
+        const modalAddWidget = M.Modal.getInstance(document.getElementById('modal-add-widget'));
+        const activeDashboard = App.DashboardManager.getActiveDashboard();
 
-        headerRow.appendChild(title);
-        headerRow.appendChild(spacer);
-        headerRow.appendChild(deleteBtn);
-        contentContainer.appendChild(headerRow);
-
-        if (activeDashboard.widgets.length === 0) {
-            const emptyMsg = document.createElement('div');
-            emptyMsg.className = 'col s12 center-align grey-text';
-            emptyMsg.innerHTML = '<p>No widgets yet. Click + to add one.</p>';
-            contentContainer.appendChild(emptyMsg);
+        if (!activeDashboard) {
+            M.toast({html: 'Please create or select a dashboard first.'});
             return;
         }
 
-        activeDashboard.widgets.forEach(widgetData => {
-            try {
-                const widget = App.WidgetRegistry.createWidget(
-                    widgetData.type,
-                    widgetData.id,
-                    widgetData.title,
-                    widgetData.config
-                );
-                widget.render(contentContainer);
-            } catch (e) {
-                console.error('Failed to render widget:', e);
-            }
-        });
+        // Reset form
+        document.getElementById('widget-type-select').value = '';
+        document.getElementById('widget-title').value = '';
+        document.getElementById('html-content').value = '';
+        document.getElementById('rss-url').value = '';
+        document.getElementById('google-news-query').value = '';
+        document.querySelectorAll('.widget-config').forEach(el => el.style.display = 'none');
+        M.FormSelect.init(document.querySelectorAll('select'));
+
+        modalAddWidget.open();
     }
 
     function setupEventListeners() {
@@ -130,24 +211,8 @@
             }
         });
 
-        // Add Widget
-        const modalAddWidget = M.Modal.getInstance(document.getElementById('modal-add-widget'));
-        document.getElementById('btn-add-widget').addEventListener('click', () => {
-            const activeDashboard = App.DashboardManager.getActiveDashboard();
-            if (!activeDashboard) {
-                M.toast({html: 'Please create or select a dashboard first.'});
-                return;
-            }
-            // Reset form
-            document.getElementById('widget-type-select').value = '';
-            document.getElementById('widget-title').value = '';
-            document.getElementById('html-content').value = '';
-            document.getElementById('rss-url').value = '';
-            document.querySelectorAll('.widget-config').forEach(el => el.style.display = 'none');
-            M.FormSelect.init(document.querySelectorAll('select')); // Re-init select
-
-            modalAddWidget.open();
-        });
+        // Add Widget Button Logic is now handled in renderWidgets -> openAddWidgetModal
+        // But we keep the modal confirm logic here.
 
         // Widget Type Change
         document.getElementById('widget-type-select').addEventListener('change', (e) => {
@@ -220,7 +285,15 @@
             const activeDashboard = App.DashboardManager.getActiveDashboard();
             if (activeDashboard && confirm('Delete this widget?')) {
                 App.DashboardManager.removeWidget(activeDashboard.id, widgetId);
+                // Instead of full re-render, we could use grid.remove(), but re-render is safer for sync
                 renderWidgets();
+            }
+        });
+
+        // Window Resize Handler for Muuri
+        window.addEventListener('resize', () => {
+            if (grid) {
+                grid.refreshItems().layout();
             }
         });
     }
