@@ -71,6 +71,7 @@
                     <option value="" disabled selected>Choose widget type</option>
                     <option value="html">HTML Widget</option>
                     <option value="rss">RSS Feed Widget</option>
+                    <option value="google-news">Google News Widget</option>
                 </select>
                 <label>Widget Type</label>
             </div>
@@ -88,6 +89,15 @@
                 <div class="input-field">
                     <input id="rss-url" type="text" class="validate">
                     <label for="rss-url">RSS Feed URL</label>
+                </div>
+            </div>
+
+            <!-- Google News Widget Config -->
+            <div id="config-google-news" class="widget-config" style="display:none;">
+                <div class="input-field">
+                    <input id="google-news-query" type="text" class="validate">
+                    <label for="google-news-query">Search Query</label>
+                    <span class="helper-text">Enter keywords to search for news</span>
                 </div>
             </div>
 
@@ -116,6 +126,7 @@
     <script src="js/widgets/base-widget.js"></script>
     <script src="js/widgets/html-widget.js"></script>
     <script src="js/widgets/rss-widget.js"></script>
+    <script src="js/widgets/google-news-widget.js"></script>
     <script src="js/widget-registry.js"></script>
     <script src="js/dashboard-manager.js"></script>
     <script src="js/app.js"></script>

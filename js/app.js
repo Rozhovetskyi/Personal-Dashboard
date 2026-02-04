@@ -157,6 +157,8 @@
                 document.getElementById('config-html').style.display = 'block';
             } else if (type === 'rss') {
                 document.getElementById('config-rss').style.display = 'block';
+            } else if (type === 'google-news') {
+                document.getElementById('config-google-news').style.display = 'block';
             }
         });
 
@@ -171,6 +173,8 @@
                 config.content = document.getElementById('html-content').value;
             } else if (type === 'rss') {
                 config.url = document.getElementById('rss-url').value.trim();
+            } else if (type === 'google-news') {
+                config.query = document.getElementById('google-news-query').value.trim();
             }
 
             App.DashboardManager.addWidgetToCurrent(type, title, config);

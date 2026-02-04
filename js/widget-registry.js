@@ -6,6 +6,8 @@
                 WidgetClass = App.Widgets.HtmlWidget;
             } else if (type === 'rss') {
                 WidgetClass = App.Widgets.RssWidget;
+            } else if (type === 'google-news') {
+                WidgetClass = App.Widgets.GoogleNewsWidget;
             }
 
             if (!WidgetClass) {
@@ -15,7 +17,7 @@
         },
 
         getAvailableTypes: () => {
-            return ['html', 'rss'];
+            return ['html', 'rss', 'google-news'];
         }
     };
 })();
