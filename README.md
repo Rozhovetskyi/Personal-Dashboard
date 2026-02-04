@@ -19,8 +19,21 @@ A lightweight, client-side dashboard application built with vanilla JavaScript a
 - **JavaScript** (No build step, no modules)
 - **No Backend**: Runs entirely in the browser.
 
-## Running the App
+## Deployment & Hosting
 
-You can open `index.html` directly in your browser. No server is required.
+### GitHub Pages
 
-Alternatively, you can serve it via GitHub Pages or any static file server.
+This repository is configured to automatically deploy to GitHub Pages.
+
+- **URL**: `https://<your-username>.github.io/<repository-name>/`
+- **Setup**:
+  1. Go to your repository settings on GitHub.
+  2. Navigate to "Pages" in the sidebar.
+  3. Under "Build and deployment", ensure the source is set to "GitHub Actions".
+  4. The included workflow `.github/workflows/static.yml` will handle the rest on every push to the main branch.
+
+### Local Execution
+
+You can run this application locally without any server:
+1. Clone the repository.
+2. Open `index.html` directly in your web browser.
