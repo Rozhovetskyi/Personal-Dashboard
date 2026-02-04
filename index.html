@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thematical Dashboard</title>
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <nav class="blue darken-2">
+        <div class="nav-wrapper container">
+            <a href="#" class="brand-logo">Dashboard</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#" id="btn-import"><i class="material-icons left">file_upload</i>Import</a></li>
+                <li><a href="#" id="btn-export"><i class="material-icons left">file_download</i>Export</a></li>
+                <li><a href="#" id="btn-add-dashboard"><i class="material-icons left">add_to_photos</i>New Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container main-container">
+        <!-- Dashboard Tabs -->
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs" id="dashboard-tabs">
+                    <!-- Tabs will be dynamically populated -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="dashboard-content" class="row">
+            <!-- Widgets will be rendered here -->
+        </div>
+    </div>
+
+    <!-- Floating Action Button for adding widgets -->
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red" id="btn-add-widget">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Dashboard Modal -->
+    <div id="modal-add-dashboard" class="modal">
+        <div class="modal-content">
+            <h4>New Dashboard</h4>
+            <div class="input-field">
+                <input id="new-dashboard-name" type="text" class="validate">
+                <label for="new-dashboard-name">Dashboard Name</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a href="#!" id="confirm-add-dashboard" class="modal-close waves-effect waves-green btn-flat">Create</a>
+        </div>
+    </div>
+
+    <!-- Add Widget Modal -->
+    <div id="modal-add-widget" class="modal">
+        <div class="modal-content">
+            <h4>Add Widget</h4>
+            <div class="input-field">
+                <select id="widget-type-select">
+                    <option value="" disabled selected>Choose widget type</option>
+                    <option value="html">HTML Widget</option>
+                    <option value="rss">RSS Feed Widget</option>
+                </select>
+                <label>Widget Type</label>
+            </div>
+
+            <!-- HTML Widget Config -->
+            <div id="config-html" class="widget-config" style="display:none;">
+                <div class="input-field">
+                    <textarea id="html-content" class="materialize-textarea"></textarea>
+                    <label for="html-content">HTML Content</label>
+                </div>
+            </div>
+
+            <!-- RSS Widget Config -->
+            <div id="config-rss" class="widget-config" style="display:none;">
+                <div class="input-field">
+                    <input id="rss-url" type="text" class="validate">
+                    <label for="rss-url">RSS Feed URL</label>
+                </div>
+            </div>
+
+            <div class="input-field">
+                <input id="widget-title" type="text" class="validate">
+                <label for="widget-title">Widget Title (Optional)</label>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            <a href="#!" id="confirm-add-widget" class="modal-close waves-effect waves-green btn-flat">Add</a>
+        </div>
+    </div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="file-import" style="display: none;" accept=".json">
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

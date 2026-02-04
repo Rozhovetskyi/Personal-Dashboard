@@ -1,0 +1,89 @@
+body {
+    background-color: #f5f5f5;
+}
+
+.main-container {
+    margin-top: 20px;
+    margin-bottom: 80px; /* Space for FAB */
+}
+
+.widget-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card .card-content {
+    flex-grow: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.widget-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+/* Specific styling for HTML widget content to ensure it doesn't break layout */
+.html-widget-content {
+    /* max-height: 400px; Remove fixed max-height, let card grow or scroll */
+}
+
+.rss-widget-content {
+    /* max-height: 400px; */
+}
+
+.rss-item {
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2); /* Light border for dark card */
+    padding-bottom: 5px;
+}
+
+.rss-item:last-child {
+    border-bottom: none;
+}
+
+.rss-item a {
+    color: #90caf9; /* Light blue for links on dark background */
+}
+
+.tabs .tab a {
+    color: #1976D2; /* Blue darken-2 */
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+    color: #1565C0;
+}
+
+.tabs .indicator {
+    background-color: #1565C0;
+}
+
+/* Ensure modal is visible when active */
+.modal {
+    max-height: 80%;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Scrollbar styling for widget body */
+.widget-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.widget-body::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+}
+
+.widget-body::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 3px;
+}
+
+.widget-body::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.3);
+}
