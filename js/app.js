@@ -24,10 +24,27 @@
 
     function renderTabs() {
         const tabsContainer = document.getElementById('dashboard-tabs');
-        tabsContainer.innerHTML = '';
-
         const dashboards = App.DashboardManager.getDashboards();
         const activeDashboard = App.DashboardManager.getActiveDashboard();
+
+        // Only rebuild tabs if the number of tabs or their names/ids don't match the DOM
+        // Simpler: Just rebuild if the count differs or strict check.
+        // For now, let's just clear and rebuild ONLY if the count/IDs mismatch,
+        // OR simply update the active class if they exist.
+
+        // However, simplest fix for the visual glitch is to just rebuild them
+        // BUT handle the click without re-rendering the tabs themselves if possible.
+        // Let's go with: Rebuild only if we add/remove dashboards.
+
+        // Check if we need to rebuild
+        const currentTabCount = tabsContainer.querySelectorAll('li.tab').length;
+        if (currentTabCount === dashboards.length) {
+            // Just update active state
+            updateTabActiveState();
+            return;
+        }
+
+        tabsContainer.innerHTML = '';
 
         dashboards.forEach(dashboard => {
             const li = document.createElement('li');
@@ -36,22 +53,41 @@
             const a = document.createElement('a');
             a.href = `#${dashboard.id}`;
             a.textContent = dashboard.name;
+            a.setAttribute('data-dashboard-id', dashboard.id);
+
             a.onclick = (e) => {
                 e.preventDefault();
-                App.DashboardManager.setActiveDashboard(dashboard.id);
-                renderUI(); // Re-render widgets for the new dashboard
-            };
+                const id = dashboard.id;
+                App.DashboardManager.setActiveDashboard(id);
 
-            if (activeDashboard && dashboard.id === activeDashboard.id) {
-                a.className = 'active';
-            }
+                // Manually update active state instead of re-rendering tabs
+                updateTabActiveState();
+                renderWidgets();
+            };
 
             li.appendChild(a);
             tabsContainer.appendChild(li);
         });
 
-        // Re-init tabs to make the indicator work
-        const tabsInstance = M.Tabs.init(tabsContainer, {});
+        // M.Tabs.init causes issues with our manual content rendering
+        // We will handle active state manually.
+        updateTabActiveState();
+    }
+
+    function updateTabActiveState() {
+        const activeDashboard = App.DashboardManager.getActiveDashboard();
+        if (!activeDashboard) return;
+
+        const tabsContainer = document.getElementById('dashboard-tabs');
+        const links = tabsContainer.querySelectorAll('a');
+
+        links.forEach(a => {
+            if (a.getAttribute('data-dashboard-id') === activeDashboard.id) {
+                a.classList.add('active');
+            } else {
+                a.classList.remove('active');
+            }
+        });
     }
 
     function renderWidgets() {
@@ -126,7 +162,7 @@
         grid = new Muuri(gridElement, {
             dragEnabled: true,
             layout: {
-                fillGaps: true
+                fillGaps: false
             },
             dragStartPredicate: (item, e) => {
                 // Prevent drag if clicking on the delete button

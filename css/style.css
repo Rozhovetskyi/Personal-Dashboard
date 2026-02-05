@@ -41,9 +41,12 @@ nav.blue.darken-2 {
 .tabs .tab a:hover, .tabs .tab a.active {
     color: var(--text-primary);
     background-color: transparent;
+    /* Manual active indicator since we removed M.Tabs.init */
+    border-bottom: 2px solid #f78166;
 }
 .tabs .indicator {
     background-color: #f78166;
+    display: none; /* Hide if it still exists somehow */
 }
 
 /* Widget Card Styling - Muuri Items */
