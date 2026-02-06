@@ -26,10 +26,22 @@
             cardTitle.textContent = this.title;
 
             // Delete button
-            const deleteBtn = document.createElement('i');
-            deleteBtn.className = 'material-icons right cursor-pointer';
-            deleteBtn.textContent = 'close';
-            deleteBtn.style.cursor = 'pointer';
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn-flat waves-effect waves-light right';
+            deleteBtn.style.padding = '0';
+            deleteBtn.style.margin = '0';
+            deleteBtn.style.width = '24px';
+            deleteBtn.style.height = '24px';
+            deleteBtn.style.lineHeight = '24px';
+            deleteBtn.style.minHeight = '0';
+            deleteBtn.style.backgroundColor = 'transparent';
+            deleteBtn.setAttribute('aria-label', `Delete ${this.title}`);
+
+            const deleteIcon = document.createElement('i');
+            deleteIcon.className = 'material-icons white-text';
+            deleteIcon.textContent = 'close';
+            deleteBtn.appendChild(deleteIcon);
+
             deleteBtn.onclick = () => {
                 // Dispatch a custom event for the dashboard manager to catch
                 const event = new CustomEvent('widget-delete', { detail: { widgetId: this.id }, bubbles: true });
