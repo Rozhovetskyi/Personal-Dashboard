@@ -9,7 +9,7 @@
 
         // Initialize Materialize components that are static
         M.Modal.init(document.querySelectorAll('.modal'), {});
-        M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'), {});
+        // M.FloatingActionButton.init(document.querySelectorAll('.fixed-action-btn'), {}); // Removed
         M.FormSelect.init(document.querySelectorAll('select'), {});
 
         // Event Listeners
@@ -63,18 +63,47 @@
             return;
         }
 
-        // Add a header for the dashboard with a delete button
+        // Add a header for the dashboard with buttons
         const headerRow = document.createElement('div');
         headerRow.className = 'col s12 valign-wrapper';
         headerRow.style.marginBottom = '20px';
+        headerRow.style.justifyContent = 'space-between';
 
         const title = document.createElement('h5');
         title.textContent = activeDashboard.name;
         title.className = 'left';
+        title.style.margin = '0';
 
+        const buttonsContainer = document.createElement('div');
+        buttonsContainer.className = 'right';
+        buttonsContainer.style.display = 'flex';
+        buttonsContainer.style.gap = '10px';
+
+        // Add Widget Button
+        const addWidgetBtn = document.createElement('button');
+        addWidgetBtn.className = 'btn-outlined waves-effect';
+        addWidgetBtn.innerHTML = '<i class="material-icons left">add</i>Add Widget';
+        addWidgetBtn.setAttribute('aria-label', 'Add new widget');
+        addWidgetBtn.onclick = () => {
+            // Re-using the logic from the old FAB, but we need to trigger the modal opening
+            const modalAddWidget = M.Modal.getInstance(document.getElementById('modal-add-widget'));
+
+            // Reset form logic
+            document.getElementById('widget-type-select').value = '';
+            document.getElementById('widget-title').value = '';
+            document.getElementById('html-content').value = '';
+            document.getElementById('rss-url').value = '';
+            document.querySelectorAll('.widget-config').forEach(el => el.style.display = 'none');
+            M.FormSelect.init(document.querySelectorAll('select')); // Re-init select
+
+            modalAddWidget.open();
+        };
+
+        // Delete Dashboard Button
         const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'btn-flat red-text right waves-effect';
-        deleteBtn.textContent = 'Delete Dashboard';
+        deleteBtn.className = 'btn-outlined danger waves-effect';
+        deleteBtn.innerHTML = '<i class="material-icons left">delete</i>Delete Dashboard';
+        deleteBtn.setAttribute('aria-label', 'Delete current dashboard');
         deleteBtn.onclick = () => {
             if (confirm(`Are you sure you want to delete "${activeDashboard.name}"?`)) {
                 App.DashboardManager.removeDashboard(activeDashboard.id);
@@ -82,13 +111,11 @@
             }
         };
 
-        // Spacer
-        const spacer = document.createElement('div');
-        spacer.style.flexGrow = 1;
+        buttonsContainer.appendChild(addWidgetBtn);
+        buttonsContainer.appendChild(deleteBtn);
 
         headerRow.appendChild(title);
-        headerRow.appendChild(spacer);
-        headerRow.appendChild(deleteBtn);
+        headerRow.appendChild(buttonsContainer);
         contentContainer.appendChild(headerRow);
 
         if (activeDashboard.widgets.length === 0) {
@@ -130,24 +157,8 @@
             }
         });
 
-        // Add Widget
-        const modalAddWidget = M.Modal.getInstance(document.getElementById('modal-add-widget'));
-        document.getElementById('btn-add-widget').addEventListener('click', () => {
-            const activeDashboard = App.DashboardManager.getActiveDashboard();
-            if (!activeDashboard) {
-                M.toast({html: 'Please create or select a dashboard first.'});
-                return;
-            }
-            // Reset form
-            document.getElementById('widget-type-select').value = '';
-            document.getElementById('widget-title').value = '';
-            document.getElementById('html-content').value = '';
-            document.getElementById('rss-url').value = '';
-            document.querySelectorAll('.widget-config').forEach(el => el.style.display = 'none');
-            M.FormSelect.init(document.querySelectorAll('select')); // Re-init select
-
-            modalAddWidget.open();
-        });
+        // Add Widget - Logic moved to inline click handler in renderWidgets because button is dynamic now.
+        // However, we still need the modal instance available, which is handled via ID lookup.
 
         // Widget Type Change
         document.getElementById('widget-type-select').addEventListener('change', (e) => {
