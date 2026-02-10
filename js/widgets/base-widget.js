@@ -16,10 +16,10 @@
             col.className = 'col s12 m6 l4'; // Responsive grid
 
             const card = document.createElement('div');
-            card.className = 'card blue-grey darken-1 widget-card';
+            card.className = 'card widget-card';
 
             const cardContent = document.createElement('div');
-            cardContent.className = 'card-content white-text';
+            cardContent.className = 'card-content';
 
             const cardTitle = document.createElement('span');
             cardTitle.className = 'card-title';

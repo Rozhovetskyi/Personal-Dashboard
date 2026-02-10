@@ -237,6 +237,12 @@ textarea.materialize-textarea:focus:not([readonly]) {
     margin-top: 4px;
 }
 
+.rss-item-description {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin: 4px 0 0 0;
+}
+
 /* Scrollbar */
 .widget-body::-webkit-scrollbar {
     width: 8px;

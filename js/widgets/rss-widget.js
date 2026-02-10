@@ -34,15 +34,14 @@
                         itemDiv.className = 'rss-item';
 
                         const itemLink = document.createElement('a');
+                        itemLink.className = 'rss-item-link';
                         itemLink.href = item.link;
                         itemLink.target = '_blank';
                         itemLink.textContent = item.title;
-                        itemLink.style.fontWeight = 'bold';
 
                         const itemDesc = document.createElement('p');
+                        itemDesc.className = 'rss-item-description';
                         // descriptions often contain HTML
-                        itemDesc.style.fontSize = '0.9em';
-                        itemDesc.style.color = '#666';
                         // truncate description
                         const tempDiv = document.createElement('div');
                         tempDiv.innerHTML = item.description;
