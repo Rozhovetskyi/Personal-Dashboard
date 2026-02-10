@@ -59,15 +59,6 @@
     <div id="modal-add-widget" class="modal">
         <div class="modal-content">
             <h4>Add Widget</h4>
-            <div class="input-field">
-                <select id="widget-type-select">
-                    <option value="" disabled selected>Choose widget type</option>
-                    <option value="html">HTML Widget</option>
-                    <option value="rss">RSS Feed Widget</option>
-                    <option value="google-news">Google News Widget</option>
-                </select>
-                <label>Widget Type</label>
-            </div>
 
             <!-- HTML Widget Config -->
             <div id="config-html" class="widget-config" style="display:none;">
@@ -83,6 +74,18 @@
                     <input id="rss-url" type="text" class="validate">
                     <label for="rss-url">RSS Feed URL</label>
                 </div>
+                <div class="input-field">
+                    <input id="rss-max-items" type="number" min="1" class="validate">
+                    <label for="rss-max-items">Max Items (Optional)</label>
+                </div>
+                <div class="switch" style="margin-bottom: 20px;">
+                    <label>
+                        Hide Description
+                        <input id="rss-show-desc" type="checkbox" checked>
+                        <span class="lever"></span>
+                        Show Description
+                    </label>
+                </div>
             </div>
 
             <!-- Google News Widget Config -->
@@ -91,6 +94,18 @@
                     <input id="google-news-query" type="text" class="validate">
                     <label for="google-news-query">Search Query</label>
                     <span class="helper-text">Enter keywords to search for news</span>
+                </div>
+                <div class="input-field">
+                    <input id="google-news-max-items" type="number" min="1" class="validate">
+                    <label for="google-news-max-items">Max Items (Optional)</label>
+                </div>
+                <div class="switch" style="margin-bottom: 20px;">
+                    <label>
+                        Hide Description
+                        <input id="google-news-show-desc" type="checkbox" checked>
+                        <span class="lever"></span>
+                        Show Description
+                    </label>
                 </div>
             </div>
 

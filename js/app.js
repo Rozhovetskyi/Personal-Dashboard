@@ -79,25 +79,41 @@
         buttonsContainer.style.display = 'flex';
         buttonsContainer.style.gap = '10px';
 
-        // Add Widget Button
+        // Add Widget Dropdown Trigger
         const addWidgetBtn = document.createElement('button');
-        addWidgetBtn.className = 'btn-outlined waves-effect';
+        addWidgetBtn.className = 'btn-outlined waves-effect dropdown-trigger';
         addWidgetBtn.innerHTML = '<i class="material-icons left">add</i>Add Widget';
         addWidgetBtn.setAttribute('aria-label', 'Add new widget');
-        addWidgetBtn.onclick = () => {
-            // Re-using the logic from the old FAB, but we need to trigger the modal opening
-            const modalAddWidget = M.Modal.getInstance(document.getElementById('modal-add-widget'));
+        addWidgetBtn.setAttribute('data-target', 'add-widget-dropdown');
 
-            // Reset form logic
-            document.getElementById('widget-type-select').value = '';
-            document.getElementById('widget-title').value = '';
-            document.getElementById('html-content').value = '';
-            document.getElementById('rss-url').value = '';
-            document.querySelectorAll('.widget-config').forEach(el => el.style.display = 'none');
-            M.FormSelect.init(document.querySelectorAll('select')); // Re-init select
+        // Add Widget Dropdown Structure
+        let dropdown = document.getElementById('add-widget-dropdown');
+        if (!dropdown) {
+            dropdown = document.createElement('ul');
+            dropdown.id = 'add-widget-dropdown';
+            dropdown.className = 'dropdown-content';
 
-            modalAddWidget.open();
-        };
+            const types = [
+                { type: 'html', label: 'HTML Widget', icon: 'code' },
+                { type: 'rss', label: 'RSS Feed', icon: 'rss_feed' },
+                { type: 'google-news', label: 'Google News', icon: 'public' }
+            ];
+
+            types.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#!';
+                a.className = 'valign-wrapper';
+                a.innerHTML = `<i class="material-icons">${item.icon}</i>${item.label}`;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    openAddWidgetModal(item.type);
+                };
+                li.appendChild(a);
+                dropdown.appendChild(li);
+            });
+            document.body.appendChild(dropdown);
+        }
 
         // Delete Dashboard Button
         const deleteBtn = document.createElement('button');
@@ -117,6 +133,12 @@
         headerRow.appendChild(title);
         headerRow.appendChild(buttonsContainer);
         contentContainer.appendChild(headerRow);
+
+        // Initialize Dropdown after adding to DOM
+        M.Dropdown.init(addWidgetBtn, {
+            constrainWidth: false,
+            coverTrigger: false
+        });
 
         if (activeDashboard.widgets.length === 0) {
             const emptyMsg = document.createElement('div');
@@ -157,35 +179,25 @@
             }
         });
 
-        // Add Widget - Logic moved to inline click handler in renderWidgets because button is dynamic now.
-        // However, we still need the modal instance available, which is handled via ID lookup.
+        // Add Widget Confirmation
+        document.getElementById('confirm-add-widget').addEventListener('click', (e) => {
+            const modal = document.getElementById('modal-add-widget');
+            const type = modal.getAttribute('data-selected-type');
+            if (!type) return;
 
-        // Widget Type Change
-        document.getElementById('widget-type-select').addEventListener('change', (e) => {
-            document.querySelectorAll('.widget-config').forEach(el => el.style.display = 'none');
-            const type = e.target.value;
-            if (type === 'html') {
-                document.getElementById('config-html').style.display = 'block';
-            } else if (type === 'rss') {
-                document.getElementById('config-rss').style.display = 'block';
-            } else if (type === 'google-news') {
-                document.getElementById('config-google-news').style.display = 'block';
-            }
-        });
-
-        document.getElementById('confirm-add-widget').addEventListener('click', () => {
-            const type = document.getElementById('widget-type-select').value;
             const title = document.getElementById('widget-title').value.trim();
             let config = {};
-
-            if (!type) return;
 
             if (type === 'html') {
                 config.content = document.getElementById('html-content').value;
             } else if (type === 'rss') {
                 config.url = document.getElementById('rss-url').value.trim();
+                config.maxItems = document.getElementById('rss-max-items').value;
+                config.showDescription = document.getElementById('rss-show-desc').checked;
             } else if (type === 'google-news') {
                 config.query = document.getElementById('google-news-query').value.trim();
+                config.maxItems = document.getElementById('google-news-max-items').value;
+                config.showDescription = document.getElementById('google-news-show-desc').checked;
             }
 
             App.DashboardManager.addWidgetToCurrent(type, title, config);
@@ -234,6 +246,40 @@
                 renderWidgets();
             }
         });
+    }
+
+    function openAddWidgetModal(type) {
+        const modalAddWidget = M.Modal.getInstance(document.getElementById('modal-add-widget'));
+        const modalEl = document.getElementById('modal-add-widget');
+
+        // Store selected type
+        modalEl.setAttribute('data-selected-type', type);
+
+        // Reset inputs
+        document.getElementById('widget-title').value = '';
+        document.getElementById('html-content').value = '';
+        document.getElementById('rss-url').value = '';
+        document.getElementById('google-news-query').value = '';
+        document.getElementById('rss-max-items').value = '';
+        document.getElementById('rss-show-desc').checked = true;
+        document.getElementById('google-news-max-items').value = '';
+        document.getElementById('google-news-show-desc').checked = true;
+
+        // Show relevant config
+        document.querySelectorAll('.widget-config').forEach(el => el.style.display = 'none');
+        if (type === 'html') {
+            document.getElementById('config-html').style.display = 'block';
+        } else if (type === 'rss') {
+            document.getElementById('config-rss').style.display = 'block';
+        } else if (type === 'google-news') {
+            document.getElementById('config-google-news').style.display = 'block';
+        }
+
+        // Update modal title
+        const typeLabel = type === 'html' ? 'HTML Widget' : (type === 'rss' ? 'RSS Feed' : 'Google News');
+        modalEl.querySelector('h4').textContent = `Add ${typeLabel}`;
+
+        modalAddWidget.open();
     }
 
     if (document.readyState === 'loading') {

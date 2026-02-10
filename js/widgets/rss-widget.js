@@ -29,7 +29,12 @@
                     contentDiv.innerHTML = ''; // Clear loading
                     const list = document.createElement('div');
 
-                    data.items.forEach(item => {
+                    let items = data.items;
+                    if (this.config.maxItems && !isNaN(this.config.maxItems)) {
+                        items = items.slice(0, parseInt(this.config.maxItems));
+                    }
+
+                    items.forEach(item => {
                         const itemDiv = document.createElement('div');
                         itemDiv.className = 'rss-item';
 
@@ -39,16 +44,20 @@
                         itemLink.target = '_blank';
                         itemLink.textContent = item.title;
 
-                        const itemDesc = document.createElement('p');
-                        itemDesc.className = 'rss-item-description';
-                        // descriptions often contain HTML
-                        // truncate description
-                        const tempDiv = document.createElement('div');
-                        tempDiv.innerHTML = item.description;
-                        itemDesc.textContent = tempDiv.textContent.substring(0, 100) + '...';
-
                         itemDiv.appendChild(itemLink);
-                        itemDiv.appendChild(itemDesc);
+
+                        // Handle showDescription - Default to true for backward compatibility
+                        if (this.config.showDescription !== false) {
+                            const itemDesc = document.createElement('p');
+                            itemDesc.className = 'rss-item-description';
+                            // descriptions often contain HTML
+                            // truncate description
+                            const tempDiv = document.createElement('div');
+                            tempDiv.innerHTML = item.description;
+                            itemDesc.textContent = tempDiv.textContent.substring(0, 100) + '...';
+                            itemDiv.appendChild(itemDesc);
+                        }
+
                         list.appendChild(itemDiv);
                     });
                     contentDiv.appendChild(list);

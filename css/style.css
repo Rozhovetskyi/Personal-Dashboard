@@ -265,3 +265,72 @@ textarea.materialize-textarea:focus:not([readonly]) {
 .cursor-pointer {
     cursor: pointer;
 }
+
+/* Widget Selection Styles */
+.widget-selection-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.widget-option {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: var(--card-bg-color);
+    border: 1px solid #333;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+}
+
+.widget-option:hover {
+    background-color: #333;
+    border-color: var(--accent-color);
+}
+
+.widget-option.selected {
+    background-color: rgba(187, 134, 252, 0.1);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.widget-option i {
+    margin-right: 15px;
+}
+
+.widget-option span {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Dropdown Styles */
+#add-widget-dropdown {
+    background-color: var(--card-bg-color);
+    border: 1px solid #333;
+    border-radius: 4px;
+    min-width: 200px;
+}
+
+#add-widget-dropdown li {
+    min-height: 50px;
+}
+
+#add-widget-dropdown li > a {
+    color: var(--text-primary);
+    padding: 14px 16px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+#add-widget-dropdown li > a > i {
+    margin-right: 15px;
+    color: var(--accent-color);
+}
+
+#add-widget-dropdown li:hover {
+    background-color: #333;
+}
