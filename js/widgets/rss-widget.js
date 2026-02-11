@@ -30,6 +30,21 @@
                     const list = document.createElement('div');
 
                     let items = data.items;
+
+                    // Filter by date if configured
+                    if (this.config.filterDays && !isNaN(this.config.filterDays)) {
+                        const days = parseInt(this.config.filterDays);
+                        const cutoffDate = new Date();
+                        cutoffDate.setDate(cutoffDate.getDate() - days);
+
+                        items = items.filter(item => {
+                            if (!item.pubDate) return true; // Keep items without date to be safe, or filter them out? Maybe keep.
+                            // rss2json returns pubDate in format "YYYY-MM-DD HH:mm:ss" which is parseable
+                            const itemDate = new Date(item.pubDate.replace(/-/g, '/')); // replace - with / for better cross-browser compatibility
+                            return !isNaN(itemDate.getTime()) ? itemDate >= cutoffDate : true;
+                        });
+                    }
+
                     if (this.config.maxItems && !isNaN(this.config.maxItems)) {
                         items = items.slice(0, parseInt(this.config.maxItems));
                     }

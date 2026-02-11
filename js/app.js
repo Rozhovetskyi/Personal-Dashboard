@@ -194,10 +194,12 @@
             } else if (type === 'rss') {
                 config.url = document.getElementById('rss-url').value.trim();
                 config.maxItems = document.getElementById('rss-max-items').value;
+                config.filterDays = document.getElementById('rss-filter-days').value;
                 config.showDescription = document.getElementById('rss-show-desc').checked;
             } else if (type === 'google-news') {
                 config.query = document.getElementById('google-news-query').value.trim();
                 config.maxItems = document.getElementById('google-news-max-items').value;
+                config.filterDays = document.getElementById('google-news-filter-days').value;
                 config.showDescription = document.getElementById('google-news-show-desc').checked;
             }
 
@@ -286,10 +288,12 @@
             } else if (widget.type === 'rss') {
                 document.getElementById('rss-url').value = widget.config.url || '';
                 document.getElementById('rss-max-items').value = widget.config.maxItems || '';
+                document.getElementById('rss-filter-days').value = widget.config.filterDays || '';
                 document.getElementById('rss-show-desc').checked = widget.config.showDescription !== false;
             } else if (widget.type === 'google-news') {
                 document.getElementById('google-news-query').value = widget.config.query || '';
                 document.getElementById('google-news-max-items').value = widget.config.maxItems || '';
+                document.getElementById('google-news-filter-days').value = widget.config.filterDays || '';
                 document.getElementById('google-news-show-desc').checked = widget.config.showDescription !== false;
             }
         });
@@ -312,8 +316,10 @@
         document.getElementById('rss-url').value = '';
         document.getElementById('google-news-query').value = '';
         document.getElementById('rss-max-items').value = '';
+        document.getElementById('rss-filter-days').value = '';
         document.getElementById('rss-show-desc').checked = true;
         document.getElementById('google-news-max-items').value = '';
+        document.getElementById('google-news-filter-days').value = '';
         document.getElementById('google-news-show-desc').checked = true;
 
         // Show relevant config
