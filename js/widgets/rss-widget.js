@@ -61,6 +61,17 @@
 
                         itemDiv.appendChild(itemLink);
 
+                        // Handle showDate
+                        if (this.config.showDate && item.pubDate) {
+                            const dateEl = document.createElement('small');
+                            dateEl.className = 'rss-item-date grey-text';
+                            dateEl.style.display = 'block';
+                            dateEl.style.marginBottom = '5px';
+                            const date = new Date(item.pubDate.replace(/-/g, '/'));
+                            dateEl.textContent = date.toLocaleString();
+                            itemDiv.appendChild(dateEl);
+                        }
+
                         // Handle showDescription - Default to true for backward compatibility
                         if (this.config.showDescription !== false) {
                             const itemDesc = document.createElement('p');
