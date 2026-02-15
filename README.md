@@ -1,6 +1,10 @@
-# Thematical Dashboard
+# Dashboard
 
 A lightweight, client-side dashboard application built with vanilla JavaScript and Materialize CSS.
+
+## Demo
+
+Check out the demo configuration here: [Live Demo](https://rozhovetskyi.github.io/Dashboard/demo)
 
 ## Features
 
@@ -8,6 +12,7 @@ A lightweight, client-side dashboard application built with vanilla JavaScript a
 - **Widgets**:
   - **HTML Widget**: Render custom HTML content.
   - **RSS Widget**: Fetch and display RSS feeds (powered by rss2json).
+  - **Google News Widget**: Search for news topics and display results.
 - **Persistence**: automatically saves your setup to browser's LocalStorage.
 - **Import/Export**: Export your configuration to JSON and import it back.
 - **Responsive Design**: Works on desktop and mobile.
