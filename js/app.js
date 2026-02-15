@@ -6,7 +6,7 @@
 
         // Check for config URL
         const urlParams = new URLSearchParams(window.location.search);
-        const configUrl = urlParams.get('config');
+        const configUrl = (window.App && window.App.demoConfigUrl) || urlParams.get('config');
 
         if (configUrl) {
             const success = await App.DashboardManager.loadFromUrl(configUrl);
