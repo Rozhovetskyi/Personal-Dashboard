@@ -1,8 +1,19 @@
 // Main App Logic
 (function() {
-    function initApp() {
+    async function initApp() {
         // Initialize Dashboard Manager
         App.DashboardManager.init();
+
+        // Check for config URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const configUrl = urlParams.get('config');
+
+        if (configUrl) {
+            const success = await App.DashboardManager.loadFromUrl(configUrl);
+            if (!success) {
+                M.toast({html: 'Failed to load configuration from URL'});
+            }
+        }
 
         // Initial Render
         renderUI();

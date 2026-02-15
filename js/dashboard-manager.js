@@ -112,6 +112,21 @@
             return false;
         }
 
+        async loadFromUrl(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    console.error('Failed to fetch config:', response.statusText);
+                    return false;
+                }
+                const config = await response.json();
+                return this.importState(config);
+            } catch (e) {
+                console.error('Error loading config from URL:', e);
+                return false;
+            }
+        }
+
         exportState() {
             App.Storage.exportState(this.state);
         }
