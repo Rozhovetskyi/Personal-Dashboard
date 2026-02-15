@@ -1,0 +1,153 @@
+{
+  "dashboards": [
+    {
+      "id": "735021f4-ddae-4ce4-aeba-236eb3d773bd",
+      "name": "Unity",
+      "widgets": [
+        {
+          "id": "7e0ad617-1fc9-4e49-b347-35cd0d9ef9f4",
+          "type": "rss",
+          "title": "Unity Releases",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Unity%20LTS%20Releases",
+            "maxItems": "",
+            "filterDays": "10",
+            "showDescription": false,
+            "showDate": true
+          }
+        },
+        {
+          "id": "f53d5224-aef4-4ee0-a693-fd5d64a3904d",
+          "type": "rss",
+          "title": "Unity Official",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Unity%20Forum%20Official",
+            "maxItems": "",
+            "filterDays": "7",
+            "showDescription": false
+          }
+        },
+        {
+          "id": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
+          "type": "rss",
+          "title": "Unity Webinar",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Unity%20Webinar",
+            "maxItems": "",
+            "filterDays": "",
+            "showDescription": false,
+            "showDate": true
+          }
+        },
+        {
+          "id": "b53446cd-ed6c-49fe-984e-a3d86ac35b28",
+          "type": "rss",
+          "title": "Growing Unity Repos",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Growing%20Unity%20Repos%20Created%20%3E%202026",
+            "maxItems": "",
+            "filterDays": "10",
+            "showDescription": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "934821f4-ccae-4be4-beba-126eb3d773ce",
+      "name": "AI",
+      "widgets": [
+        {
+          "id": "e1f2a3b4-c5d6-4e7f-8g9h-0i1j2k3l4m5n",
+          "type": "rss",
+          "title": "Google AR XR",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Google%20AI",
+            "maxItems": "5",
+            "filterDays": "",
+            "showDescription": true,
+            "showDate": false
+          }
+        },
+        {
+          "id": "h4i5j6k7-l8m9-4n0o-1p2q-3r4s5t6u7v8w",
+          "type": "rss",
+          "title": "Hugging Face",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Hugging%20Face",
+            "maxItems": "",
+            "filterDays": "10",
+            "showDescription": false,
+            "showDate": true
+          }
+        },
+        {
+          "id": "g3h4i5j6-k7l8-4m9n-0o1p-2q3r4s5t6u7v",
+          "type": "rss",
+          "title": "Anthropic",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Anthropic",
+            "maxItems": "",
+            "filterDays": "7",
+            "showDescription": true,
+            "showDate": true
+          }
+        },
+        {
+          "id": "f2g3h4i5-j6k7-4l8m-9n0o-1p2q3r4s5t6u",
+          "type": "rss",
+          "title": "Open AI",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Open%20AI",
+            "maxItems": "",
+            "filterDays": "7",
+            "showDescription": false,
+            "showDate": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "b63f3144-6c55-4d67-9fd6-db76fe7ab22a",
+      "name": "Computer Vision",
+      "widgets": [
+        {
+          "id": "721fb13b-627f-4198-a1a2-a6947183e8c1",
+          "type": "rss",
+          "title": "Machine Vision Commercial",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Machine%20Vision%20Commercial",
+            "maxItems": "",
+            "filterDays": "",
+            "showDescription": true,
+            "showDate": true
+          }
+        },
+        {
+          "id": "eff93954-5ba3-4106-bff2-60bc51453955",
+          "type": "rss",
+          "title": "Defect Detection News",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Defect%20Detection%20News",
+            "maxItems": "",
+            "filterDays": "",
+            "showDescription": true,
+            "showDate": true
+          }
+        },
+        {
+          "id": "756288e3-eb10-4b05-96fc-75c7e13a8843",
+          "type": "rss",
+          "title": "Defect Recognition",
+          "config": {
+            "url": "https://www.inoreader.com/stream/user/1004728238/tag/Defect%20Recognition",
+            "maxItems": "",
+            "filterDays": "",
+            "showDescription": true,
+            "showDate": true
+          }
+        }
+      ]
+    }
+  ],
+  "activeDashboardId": "735021f4-ddae-4ce4-aeba-236eb3d773bd"
+}
