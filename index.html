@@ -133,6 +133,46 @@
                 </div>
             </div>
 
+            <!-- GitHub Repo Widget Config -->
+            <div id="config-github-repo" class="widget-config" style="display:none;">
+                <div class="input-field">
+                    <input id="github-repo-url" type="text" class="validate">
+                    <label for="github-repo-url">Repository URL (e.g. https://github.com/user/repo)</label>
+                </div>
+                <div class="input-field">
+                    <select id="github-update-type">
+                        <option value="releases" selected>Repo Releases</option>
+                        <option value="commits">Repo Commits</option>
+                        <option value="tags">Repo Tags</option>
+                    </select>
+                    <label>Update Type</label>
+                </div>
+                 <div class="input-field">
+                    <input id="github-max-items" type="number" min="1" class="validate">
+                    <label for="github-max-items">Max Items (Optional)</label>
+                </div>
+                <div class="input-field">
+                    <input id="github-filter-days" type="number" min="1" class="validate">
+                    <label for="github-filter-days">Show News for Last N Days (Optional)</label>
+                </div>
+                <div class="switch" style="margin-bottom: 20px;">
+                    <label>
+                        Hide Description
+                        <input id="github-show-desc" type="checkbox" checked>
+                        <span class="lever"></span>
+                        Show Description
+                    </label>
+                </div>
+                <div class="switch" style="margin-bottom: 20px;">
+                    <label>
+                        Hide Date
+                        <input id="github-show-date" type="checkbox">
+                        <span class="lever"></span>
+                        Show Date
+                    </label>
+                </div>
+            </div>
+
             <div class="input-field">
                 <input id="widget-title" type="text" class="validate">
                 <label for="widget-title">Widget Title (Optional)</label>
@@ -159,6 +199,7 @@
     <script src="js/widgets/html-widget.js"></script>
     <script src="js/widgets/rss-widget.js"></script>
     <script src="js/widgets/google-news-widget.js"></script>
+    <script src="js/widgets/github-repo-widget.js"></script>
     <script src="js/widget-registry.js"></script>
     <script src="js/dashboard-manager.js"></script>
     <script src="js/app.js"></script>

@@ -107,7 +107,8 @@
             const types = [
                 { type: 'html', label: 'HTML Widget', icon: 'code' },
                 { type: 'rss', label: 'RSS Feed', icon: 'rss_feed' },
-                { type: 'google-news', label: 'Google News', icon: 'public' }
+                { type: 'google-news', label: 'Google News', icon: 'public' },
+                { type: 'github-repo', label: 'GitHub Repo', icon: 'storage' }
             ];
 
             types.forEach(item => {
@@ -214,6 +215,13 @@
                 config.filterDays = document.getElementById('google-news-filter-days').value;
                 config.showDescription = document.getElementById('google-news-show-desc').checked;
                 config.showDate = document.getElementById('google-news-show-date').checked;
+            } else if (type === 'github-repo') {
+                config.repoUrl = document.getElementById('github-repo-url').value.trim();
+                config.updateType = document.getElementById('github-update-type').value;
+                config.maxItems = document.getElementById('github-max-items').value;
+                config.filterDays = document.getElementById('github-filter-days').value;
+                config.showDescription = document.getElementById('github-show-desc').checked;
+                config.showDate = document.getElementById('github-show-date').checked;
             }
 
             if (widgetId) {
@@ -287,7 +295,7 @@
             modalEl.setAttribute('data-widget-id', widgetId);
 
             // Update title to indicate editing
-            const typeLabel = widget.type === 'html' ? 'HTML Widget' : (widget.type === 'rss' ? 'RSS Feed' : 'Google News');
+            const typeLabel = widget.type === 'html' ? 'HTML Widget' : (widget.type === 'rss' ? 'RSS Feed' : (widget.type === 'google-news' ? 'Google News' : 'GitHub Repo'));
             modalEl.querySelector('h4').textContent = `Edit ${typeLabel}`;
             document.getElementById('confirm-add-widget').textContent = 'Save';
 
@@ -310,6 +318,14 @@
                 document.getElementById('google-news-filter-days').value = widget.config.filterDays || '';
                 document.getElementById('google-news-show-desc').checked = widget.config.showDescription !== false;
                 document.getElementById('google-news-show-date').checked = widget.config.showDate === true;
+            } else if (widget.type === 'github-repo') {
+                document.getElementById('github-repo-url').value = widget.config.repoUrl || '';
+                document.getElementById('github-update-type').value = widget.config.updateType || 'releases';
+                document.getElementById('github-max-items').value = widget.config.maxItems || '';
+                document.getElementById('github-filter-days').value = widget.config.filterDays || '';
+                document.getElementById('github-show-desc').checked = widget.config.showDescription !== false;
+                document.getElementById('github-show-date').checked = widget.config.showDate === true;
+                M.FormSelect.init(document.getElementById('github-update-type'));
             }
         });
     }
@@ -338,6 +354,13 @@
         document.getElementById('google-news-filter-days').value = '';
         document.getElementById('google-news-show-desc').checked = true;
         document.getElementById('google-news-show-date').checked = false;
+        document.getElementById('github-repo-url').value = '';
+        document.getElementById('github-update-type').value = 'releases';
+        document.getElementById('github-max-items').value = '';
+        document.getElementById('github-filter-days').value = '';
+        document.getElementById('github-show-desc').checked = true;
+        document.getElementById('github-show-date').checked = false;
+        M.FormSelect.init(document.getElementById('github-update-type'));
 
         // Show relevant config
         document.querySelectorAll('.widget-config').forEach(el => el.style.display = 'none');
@@ -347,10 +370,12 @@
             document.getElementById('config-rss').style.display = 'block';
         } else if (type === 'google-news') {
             document.getElementById('config-google-news').style.display = 'block';
+        } else if (type === 'github-repo') {
+            document.getElementById('config-github-repo').style.display = 'block';
         }
 
         // Update modal title
-        const typeLabel = type === 'html' ? 'HTML Widget' : (type === 'rss' ? 'RSS Feed' : 'Google News');
+        const typeLabel = type === 'html' ? 'HTML Widget' : (type === 'rss' ? 'RSS Feed' : (type === 'google-news' ? 'Google News' : 'GitHub Repo'));
         modalEl.querySelector('h4').textContent = `Add ${typeLabel}`;
 
         modalAddWidget.open();
