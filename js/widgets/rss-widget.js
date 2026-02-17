@@ -20,8 +20,8 @@
             }
 
             try {
-                // Using rss2json to handle CORS and XML parsing
-                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+                // Using ar-xr.com/dashboard/rss-to-json.php to handle CORS and XML parsing
+                const apiUrl = `https://ar-xr.com/dashboard/rss-to-json.php?url=${encodeURIComponent(rssUrl)}`;
                 const response = await fetch(apiUrl);
                 const data = await response.json();
 
@@ -39,8 +39,12 @@
 
                         items = items.filter(item => {
                             if (!item.pubDate) return true; // Keep items without date to be safe, or filter them out? Maybe keep.
-                            // rss2json returns pubDate in format "YYYY-MM-DD HH:mm:ss" which is parseable
-                            const itemDate = new Date(item.pubDate.replace(/-/g, '/')); // replace - with / for better cross-browser compatibility
+                            // Handle various date formats (including YYYY-MM-DD and RFC2822)
+                            let dateStr = item.pubDate;
+                            if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
+                                dateStr = dateStr.replace(/-/g, '/'); // Fix for old Safari/IE with YYYY-MM-DD
+                            }
+                            const itemDate = new Date(dateStr);
                             return !isNaN(itemDate.getTime()) ? itemDate >= cutoffDate : true;
                         });
                     }
@@ -67,7 +71,12 @@
                             dateEl.className = 'rss-item-date grey-text';
                             dateEl.style.display = 'block';
                             dateEl.style.marginBottom = '5px';
-                            const date = new Date(item.pubDate.replace(/-/g, '/'));
+
+                            let dateStr = item.pubDate;
+                            if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
+                                dateStr = dateStr.replace(/-/g, '/');
+                            }
+                            const date = new Date(dateStr);
                             dateEl.textContent = date.toLocaleString();
                             itemDiv.appendChild(dateEl);
                         }
